@@ -7,6 +7,7 @@ def kiem_tra_so_nhi_phan(so_nhi_phan):
         return True
     else:
         return False
+
 #nhap so nhi phan tu nguoi dung
 so_nhi_phan = input("Nhap so nhi phan(phan cach boi dau phay): ")
 #tach chuoi thanh cac so nhi phan va kiem tra tung so chia het cho 5

@@ -4,7 +4,7 @@ def xoa_phan_tu(dictionary, key):
         return True
     else:
         return False
-    
+if __name__ == "__main__":  
     my_dict = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
     key_to_remove = 'b'
     result = xoa_phan_tu(my_dict, key_to_remove)
