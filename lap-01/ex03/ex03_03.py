@@ -1,15 +1,25 @@
 def tao_tuple_tu_list(lst):
-    """Chuyển đổi một tuple thành một list.
+    """Chuyển đổi một list thành một tuple.
 
     Args:
-        lst (tuple): Tuple cần chuyển đổi.
+        lst (list): List cần chuyển đổi.
 
     Returns:
-        list: List sau khi chuyển đổi từ tuple.
+        tuple: Tuple sau khi chuyển đổi từ list.
     """
-    return list(lst)
-input_list = input("Nhập danh sách các phần tử, cách nhau bởi dấu phẩy: ")
-numbers = list (map(int, input_list.split(',')))
-my_tuple = tao_tuple_tu_list(numbers)
-print("list:", numbers)
-print("tuple tu list:", my_tuple)
+    return tuple(lst)
+
+
+if __name__ == "__main__":
+    input_list = input("Nhập danh sách các phần tử, cách nhau bởi dấu phẩy: ")
+    # Loại bỏ khoảng trắng và các phần tử rỗng
+    items = [s.strip() for s in input_list.split(',') if s.strip() != '']
+    try:
+        numbers = list(map(int, items))
+    except ValueError:
+        # Nếu không chuyển được sang int, giữ nguyên dưới dạng chuỗi
+        numbers = items
+
+    my_tuple = tao_tuple_tu_list(numbers)
+    print("list:", numbers)
+    print("tuple từ list:", my_tuple)
