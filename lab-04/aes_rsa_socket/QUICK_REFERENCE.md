@@ -1,0 +1,406 @@
+# ⚡ QUICK REFERENCE - Commands & Cheatsheet
+
+## 🚀 TÓM TẮT 30 GIÂY
+
+```bash
+# 1. Cài dependencies
+pip install -r requirements.txt
+
+# 2. Chạy server
+python run.py
+
+# 3. Mở browser
+http://localhost:5000
+http://localhost:5000  (tab 2)
+
+# 4. Bấm CONNECT trên cả 2 tabs
+# 5. Gửi/nhận tin
+# ✅ Xong!
+```
+
+---
+
+## 📋 COMMAND QUICK REFERENCE
+
+### Installation & Setup
+```bash
+# Kiểm tra Python
+python --version              # Phải ≥ 3.7
+
+# Cài dependencies
+pip install -r requirements.txt
+
+# Upgrade pip (nếu lỗi)
+python -m pip install --upgrade pip
+
+# Check các packages
+pip list | grep Flask
+pip list | grep pycryptodome
+```
+
+### Running
+```bash
+# Windows
+python run.py
+# hoặc
+run.bat
+
+# Linux/Mac
+python run.py
+
+# Chạy với port khác
+# Sửa app.run(port=8000) trong run.py
+```
+
+### Troubleshooting
+```bash
+# Check port 5000 (web)
+netstat -ano | findstr :5000          # Windows
+lsof -i :5000                          # Linux/Mac
+
+# Check port 12345 (socket)
+netstat -ano | findstr :12345          # Windows  
+lsof -i :12345                         # Linux/Mac
+
+# Kill process
+taskkill /PID <pid> /F                # Windows
+kill -9 <pid>                          # Linux/Mac
+
+# Xem Python processes
+Get-Process python                     # Windows
+ps aux | grep python                   # Linux/Mac
+```
+
+---
+
+## 🌐 WEB APP URL
+
+| URL | Purpose | Notes |
+|-----|---------|-------|
+| http://localhost:5000 | Web UI | Main interface |
+| http://localhost:5000 | Tab 1 | First user |
+| http://localhost:5000 | Tab 2 | Second user (new tab) |
+| http://<IP>:5000 | Remote access | Change 0.0.0.0 in code |
+
+---
+
+## 📊 PORT CONFIGURATION
+
+### Current Setup
+```
+Web Server:    127.0.0.1:5000
+Socket Server: 127.0.0.1:12345
+```
+
+### Change Ports
+
+**Web Server (Flask)** - Edit `run.py`:
+```python
+app.run(debug=True, host='0.0.0.0', port=8000)  # Change 5000 to 8000
+```
+
+**Socket Server** - Edit `server.py`:
+```python
+server_socket.bind(('localhost', 12346))  # Change 12345 to 12346
+```
+
+Also update in `web_server.py`:
+```python
+socket_manager.connect_to_server(host, port=12346)  # Match above
+```
+
+---
+
+## 🖥️ UI/UX ELEMENTS
+
+### Status Badges
+```
+🟢 ONLINE          → Connected & active
+🔴 OFFLINE         → Disconnected
+🔒 ENCRYPTION: ACTIVE  → AES-256 running
+🔓 ENCRYPTION: DISABLED → Not encrypted
+```
+
+### Message Types
+```
+YOU: [Message]           → Your message (Blue/cyan)
+USER_XXXXXXXX: [Msg]     → Other user message (Green)
+[SYSTEM] [Message]       → System message
+SERVER: [Message]        → Server message
+```
+
+### Encryption Labels
+```
+[AES-256]   → AES-256 CBC encryption per message
+[AES-256f6] → AES with IV indicator
+RSA-2048    → RSA 2048-bit key exchange
+```
+
+---
+
+## 📁 FILE STRUCTURE
+
+```
+aes_rsa_socket/
+├── 🚀 Quick Start
+│   ├── run.py          ← Start here
+│   └── run.bat         ← Windows batch
+│
+├── 📚 Documentation (read in order)
+│   ├── START_HERE.md         ← Entry point
+│   ├── SUMMARY.md            ← Overview
+│   ├── USAGE_GUIDE.md        ← This guide
+│   ├── QUICK_REFERENCE.md    ← Commands cheatsheet
+│   ├── TESTING_MULTIUSER.md  ← Test procedures
+│   ├── README.md             ← Full docs
+│   ├── SETUP_GUIDE.md        ← Installation
+│   ├── DESIGN.md             ← UI details
+│   └── INDEX.md              ← Code reference
+│
+├── 💻 Backend Code
+│   ├── web_server.py   ← Flask + Socket manager (main)
+│   ├── server.py       ← Socket server
+│   ├── client.py       ← Client example
+│   └── requirements.txt ← Dependencies
+│
+└── 🎨 Frontend Code
+    ├── templates/chat.html    ← HTML
+    └── static/
+        ├── style.css          ← CSS (hacker theme)
+        └── script.js          ← JavaScript logic
+```
+
+---
+
+## 🔧 API ENDPOINTS
+
+### REST API (Flask)
+```
+POST /api/connect          → Create connection
+  Body: {host, port}
+  Response: {success, user_id, isConnected}
+
+POST /api/send             → Send message
+  Body: {message}
+  Response: {success, messages}
+
+GET /api/messages          → Get all messages
+  Response: {messages[{}], isConnected, user_id}
+
+POST /api/disconnect       → Close connection
+  Response: {success}
+
+GET /api/status            → Check status
+  Response: {isConnected, user_id}
+```
+
+### Socket API (Port 12345)
+```
+[Client → Server]
+1. Send RSA public key
+2. Receive AES key (encrypted)
+3. Send encrypted message
+
+[Server → Client]
+1. Send RSA public key
+2. Encrypt & send AES key
+3. Receive encrypted message
+4. Relay to other clients
+```
+
+---
+
+## 🔐 PASSWORDS & KEYS
+
+### Generated Keys
+```
+RSA Keys:      Generated on connect (2048-bit)
+AES Keys:      Generated by server (256-bit)
+Session ID:    UUID (unique per session)
+IV:            Random bytes per message
+```
+
+### Security Settings
+```
+AES Mode:      CBC (Cipher Block Chaining)
+RSA Padding:   OAEP (Optimal Asymmetric Encryption Padding)
+Block Size:    16 bytes
+Key Size:      256 bits (AES), 2048 bits (RSA)
+```
+
+---
+
+## 🎮 KEYBOARD SHORTCUTS
+
+### Browser Developer Tools
+```
+F12                    → Open dev tools
+F12 ~ Console          → JavaScript console
+F12 ~ Network          → Network requests
+F12 ~ Application      → Cookies & storage
+Ctrl+Shift+K           → Quick console (Chrome)
+Cmd+Option+J           → Quick console (Mac)
+```
+
+### Common Shortcuts
+```
+Enter                  → Send message
+Shift+Enter            → New line in message
+Ctrl+A                 → Select all
+Ctrl+C                 → Copy
+Ctrl+V                 → Paste
+F5 / Ctrl+R            → Refresh page
+Ctrl+Shift+Delete      → Clear cache
+```
+
+---
+
+## 🎯 COMMON WORKFLOWS
+
+### Setup & First Run
+```bash
+pip install -r requirements.txt    # Install packages
+python run.py                      # Start server
+# Open http://localhost:5000 in browser
+# Click CONNECT
+# Start chatting!
+```
+
+### Debug JavaScript Errors
+```bash
+# Open F12 Developer Tools
+# Go to Console tab
+# Look for red error messages
+# Check script.js line numbers
+# Fix errors and reload (F5)
+```
+
+### Debug Python Errors
+```bash
+# Check terminal where python run.py is running
+# Look for red error messages
+# Re-read error traceback
+# Fix code in web_server.py or server.py
+# Restart server: Ctrl+C then python run.py
+```
+
+### Test Multi-User Chat
+```bash
+# Terminal: python run.py
+# Browser Tab 1: http://localhost:5000
+# Browser Tab 2: http://localhost:5000
+# Tab 1: Click CONNECT
+# Tab 2: Click CONNECT (see different User ID)
+# Tab 1: Type & send message
+# Tab 2: Should automatically receive
+# ✅ Success if both tabs show messages
+```
+
+### Deploy to Different Machine
+```bash
+# On Server Machine (let's say IP: 192.168.1.100)
+python run.py
+
+# On Client Machine
+# Open: http://192.168.1.100:5000
+# Input Host: 192.168.1.100
+# Input Port: 12345
+# Click CONNECT
+```
+
+---
+
+## 📊 TROUBLESHOOTING FLOWCHART
+
+```
+Problem: Can't connect
+  ├─ Check ports: netstat -ano | findstr :12345
+  ├─ If used: taskkill /PID <pid> /F
+  ├─ Restart: python run.py
+  └─ Try connect again
+
+Problem: Messages not syncing
+  ├─ Open F12 Console
+  ├─ Check: window.chatApp.userId exists
+  ├─ Refresh: F5
+  ├─ Reconnect: DISCONNECT → CONNECT
+  └─ Try again
+
+Problem: JavaScript error
+  ├─ Check console for error line
+  ├─ Look at script.js that line
+  ├─ Check syntax (brackets, semicolons)
+  ├─ Refresh: F5
+  └─ Restart server if needed
+
+Problem: Port already in use
+  ├─ Find PID: netstat -ano | findstr :5000
+  ├─ Kill it: taskkill /PID <pid> /F
+  ├─ Start fresh: python run.py
+  └─ Open browser again
+```
+
+---
+
+## 🎓 USEFUL RESOURCES
+
+### Understanding Encryption
+- AES-256: 256-bit symmetric encryption
+- RSA-2048: 2048-bit asymmetric encryption
+- CBC Mode: Chaining block cipher mode
+- OAEP: Optimal Asymmetric Encryption Padding
+
+### Flask Documentation
+- http://flask.palletsprojects.com
+
+### PyCryptodome Documentation
+- https://pycryptodome.readthedocs.io
+
+### Python Socket Programming
+- https://docs.python.org/3/library/socket.html
+
+---
+
+## 🔄 QUICK TEST SCENARIOS
+
+### Scenario 1: Basic Connection
+```
+1. python run.py
+2. http://localhost:5000
+3. Click CONNECT
+Expected: ONLINE badge appears ✅
+```
+
+### Scenario 2: 2-User Chat
+```
+1. python run.py
+2. Tab 1: http://localhost:5000 → CONNECT
+3. Tab 2: http://localhost:5000 → CONNECT
+4. Tab 1: Send "Hi"
+5. Tab 2: Auto-receive "Hi" from USER_xxx
+Expected: Messages sync automatically ✅
+```
+
+### Scenario 3: Encryption Test
+```
+1. Connect both tabs
+2. Send message Tab 1
+3. Check Tab 2 receives with timestamp & sender
+4. Check ENCRYPTION badge is ACTIVE
+Expected: All encrypted & synced ✅
+```
+
+---
+
+## 💡 PRO TIPS
+
+1. **Fresh Test:** Use Incognito/Private window for clean session
+2. **Multiple Users:** Each browser = new user (separate session)
+3. **Port Issues:** Check other apps using 5000/12345 first
+4. **Debug Mode:** Check F12 Console for client-side errors
+5. **Clear Cache:** Ctrl+Shift+Delete if weird behavior
+6. **Restart Server:** Ctrl+C then `python run.py` for fresh state
+
+---
+
+**Bookmark this page for quick reference! 📌**

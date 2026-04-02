@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 SECURE CHAT - AES-RSA Encrypted Communication</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header with system info -->
+        <header class="header">
+            <div class="header-title">
+                <span class="icon-lock">🔐</span>
+                <h1>SECURE COMMUNICATION PROTOCOL</h1>
+                <span class="version">v2.0 - AES-256 | RSA-2048</span>
+            </div>
+            <div class="system-info">
+                <span id="status-indicator" class="status offline">
+                    <span class="dot"></span> OFFLINE
+                </span>
+                <span id="encryption-info" class="encryption-badge">ENCRYPTION: DISABLED</span>
+            </div>
+        </header>
+
+        <!-- Main chat container -->
+        <main class="chat-container">
+            <!-- Connection panel -->
+            <div class="connection-panel">
+                <div class="panel-title">
+                    <span class="icon">⚙️</span> CONNECTION SETTINGS
+                </div>
+                <div class="connection-form">
+                    <div class="form-group">
+                        <label for="server-host">Server Host</label>
+                        <input type="text" id="server-host" value="localhost" placeholder="127.0.0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="server-port">Server Port</label>
+                        <input type="number" id="server-port" value="12345" placeholder="12345">
+                    </div>
+                    <div class="button-group">
+                        <button id="connect-btn" class="btn btn-primary">
+                            <span class="icon">🔌</span> CONNECT
+                        </button>
+                        <button id="disconnect-btn" class="btn btn-danger" disabled>
+                            <span class="icon">🔌</span> DISCONNECT
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat area -->
+            <div class="chat-area">
+                <!-- Messages display -->
+                <div id="messages-container" class="messages-container">
+                    <div class="system-message">
+                        <span class="timestamp">[SYSTEM]</span>
+                        <span class="message-text">Secure chat initialized. Awaiting server connection...</span>
+                    </div>
+                </div>
+
+                <!-- Input area -->
+                <div class="input-area">
+                    <div class="message-input-wrapper">
+                        <input type="text" id="message-input" class="message-input"
+                            placeholder="Type encrypted message..." disabled>
+                        <button id="send-btn" class="send-button" disabled>
+                            <span class="icon">📤</span> SEND
+                        </button>
+                    </div>
+                    <div class="input-status">
+                        <span id="encryption-status" class="status-text">🔒 Waiting for connection...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security panel -->
+            <div class="security-panel">
+                <div class="panel-title">
+                    <span class="icon">🛡️</span> SECURITY INFORMATION
+                </div>
+                <div class="security-info">
+                    <div class="info-item">
+                        <span class="label">Encryption:</span>
+                        <span id="enc-method" class="value">AES-256 CBC</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Key Exchange:</span>
+                        <span id="key-exchange" class="value">RSA-2048 OAEP</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Messages Sent:</span>
+                        <span id="msgs-sent" class="value">0</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Messages Received:</span>
+                        <span id="msgs-received" class="value">0</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Session Duration:</span>
+                        <span id="session-duration" class="value">00:00:00</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <span class="warning">⚠️ This is a secure communication channel. Do not share sensitive
+                    credentials.</span>
+                <span class="copyright">© 2024 SECURE CHAT - All communications are encrypted end-to-end</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
